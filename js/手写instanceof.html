@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+    function _instanceof(A,B){
+        const __proto__ = A.__proto__
+        const prototype = B.prototype
+        // 还没找到尽头时
+        while(prototype !== null){
+            if(__proto__ === prototype) return true
+            else __proto__ = __proto__.__proto__
+        }
+        return false
+    }
+    const obj = {}
+    console.log(_instanceof(obj,Object));
+</script>
+</html>

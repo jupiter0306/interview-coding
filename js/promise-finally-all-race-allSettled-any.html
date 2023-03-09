@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // Promise.prototype.finally
+    promiseFinally = function(p,callback){
+        return p.then(
+            // callback如果有返回值 通过resolve包装的新对象传下去
+            value=> Promise.resolve(callback()).then(value=>value),
+            error=> Promise.resolve(callback()).then(error=>{throw error})
+            // 这两个error不是一个err 第二个error是callback的返回值吧ithink 
+        )
+    }
+
+    // 返回一个新的Promise对象 
+    // 接受一个参数为回调函数 无论当前promise对象的状态 都会执行finally的回调 相当于then的特例
+    Promise.prototype.finally = function(callback){
+        //this为p实例对象，P返回Promise构造函数
+        const P = this.constructor
+        return this.then(res=>P.resolve(callback()).then(res=>res))
+        .catch(err=>P.resolve(callback()).then(err=>{throw err}))
+        // 这两个err不是一个err 第二个err是callback的返回值吧ithink 
+    }
+
+    // 返回一个新的Promise对象
+    // 接受参数为promises对象数组
+    promiseAll = function(promises){
+        promises = Array.from(promises)//确保有迭代器
+        const result = []//存放返回值的结果数组
+        let index = 0//记录resolve的promise的数量
+        // 返回一个新的promise对象 
+        return new Promise((resolve,reject)=>{
+            for(const p of promises){
+                p.then(res=>{
+                    // 遍历每个promise 成功时加入result数组
+                    result.push(res)
+                    index++
+                    // index到所有promise都resolve了
+                    if(index === promises.length-1){
+                        resolve(result)
+                    } 
+                }).catch(
+                    err=>reject(err)
+                )
+            }
+        })
+    }
+
+    // 返回一个Promise对象 接受参数为promises数组 状态和值取决于最先resolved或rejected的p实例
+    promiseRace = function(promises){
+        promises = Array.from(promises)//确保迭代器
+        return new Promise((resolve,reject)=>{
+            for(const p of promises){
+                // 一旦有p resolved了就执行当前promise对象的resolve函数
+                p.then(res=>resolve(res)).catch(err=>{throw err})
+            }
+        })       
+    }
+
+    // Promise.allSettled()
+    // 返回的是一个新promise对象 状态是fulfilled 结果是所有promise对象
+    promiseAllSettled =  function(promises){
+        promises = Array.from(promises)//确保迭代器
+        const result = []
+        let index = 0
+        return new Promise((resolve,reject)=>{
+            for(const p of promises){
+                // p.then(res=>{
+                //     result.push(p)
+                //     if(++index === promises.length) resolve(result)
+                // })
+                // .catch(err=>{
+                //     result.push(p)
+                //     if(++index === promises.length) resolve(result)
+                // })
+                p.finally(()=>{
+                    result.push(p)
+                    if(++index === promises.length) resolve(result)
+                })
+            }
+        })
+    }
+
+    // Promise.any() 
+    // 跟all是反的 返回一个新promises对象 
+    // 只要有一个变成resolved 就返回resolved和值 所有都rejected返回rejected且结果是AggregateError实例
+    // 该实例有一个errors属性保存着错误数组
+    promiseAny = function(promises){
+        promises = Array.from(promises)//确保迭代器
+        const errors = []
+        let index = 0
+        for(const p of promises){
+            p.then(res=>resolve(res))
+            .catch(err=>{
+                errors.push(err)
+                if(++index ===  promises.length){
+                    const error = new AggregateError()
+                    error.errors = errors
+                    throw error
+                }
+            })
+        }
+    }
+    
+</script>
+</html>

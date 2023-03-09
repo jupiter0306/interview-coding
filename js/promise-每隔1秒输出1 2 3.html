@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 将promises对象按先后依次执行
+    async function mergePromise(promises){
+        const results = []
+        for(let i=0;i<promises.length;i++){
+            const result = await promises[i]
+            results.push(result)
+        }
+        return Promise.resolve(results)
+    }
+</script>
+</html>

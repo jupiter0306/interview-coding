@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="button" onclick="myClick()">click</button>
+</body>
+<script>
+    // function throttle(callback,wait){
+    //     let start = 0
+    //     return function(...args){
+    //         let now = Date.now()
+    //         // 因为 Date.now()返回的是19700101以来的时间戳且start为0 所以第一次保证能执行
+    //         if(now - start >= wait){
+    //             callback.apply(this,args)
+    //             start = now
+    //         }
+    //     }
+    // }
+    function throttle(callback,wait){
+        let timer = null
+        return function(...args){
+            // 节流里 如果定时器还开着 直接return不执行回调
+            if(timer) return
+            timer = setTimeout(()=>{
+                callback.apply(this,args)
+                // 完成回调后清除计时器
+                timer = null
+            },wait)
+        }
+    }
+
+    function debounce(callback,wait){
+        let timer = null
+        return function(...args){
+            if(timer) clearTimeout(timer)
+            // 防抖里 清空计时器重新计时
+            timer = setTimeout(()=>{
+                callback.apply(this,args)
+                // 完成回调后清除计时器
+                timer = null
+            },wait)
+
+        }
+    }
+
+    myClick = throttle(()=>{console.log(1);},1000)
+
+
+    
+</script>
+</html>

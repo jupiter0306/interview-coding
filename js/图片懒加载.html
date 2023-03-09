@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            display: block;
+            margin-bottom: 50px;
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <img class="lazy" src="" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da57c309bf6a49289d32dec8e759166c~tplv-k3u1fbpfcp-watermark.image?" alt="">
+    <img class="lazy" src="" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da57c309bf6a49289d32dec8e759166c~tplv-k3u1fbpfcp-watermark.image?" alt="">
+    <img class="lazy" src="" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da57c309bf6a49289d32dec8e759166c~tplv-k3u1fbpfcp-watermark.image?" alt="">
+    <img class="lazy" src="" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da57c309bf6a49289d32dec8e759166c~tplv-k3u1fbpfcp-watermark.image?" alt="">
+    <img class="lazy" src="" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da57c309bf6a49289d32dec8e759166c~tplv-k3u1fbpfcp-watermark.image?" alt="">
+    <img class="lazy" src="" data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da57c309bf6a49289d32dec8e759166c~tplv-k3u1fbpfcp-watermark.image?" alt="">
+
+</body>
+<script>
+    // 判断是否在视口内
+    function isInView(el){
+        let {width,height,left,top} = el.getBoundingClientRect()
+        return (top + height) > 0 && 
+        top < window.innerHeight && 
+        (left + width) > 0 &&
+        left < window.innerWidth
+    }
+    // 懒加载
+    function lazyLoad(){
+        const images = Array.from(document.querySelectorAll('.lazy'))
+        // 遍历lazy images 判断是否在视口内
+        images.forEach((img,idx)=>{
+            if(isInView(img)){
+                img.src = img.dataset.src
+                // 移除该元素
+                images.splice(idx,1)
+            }
+        })
+        // if(images.length === 0) document.removeEventListener()
+    }
+    // 节流
+    function throttle(callback,wait){
+        let timer = null
+        return function(...args){
+            // 节流里 如果定时器还开着 直接return不执行回调
+            if(timer) return
+            timer = setTimeout(()=>{
+                callback.apply(this,args)
+                // 完成回调后清除计时器
+                timer = null
+            },wait)
+        }
+    }
+    myLazyLoad = throttle(lazyLoad,200)
+    // document.addEventListener('scroll',myLazyLoad)
+    window.onscroll = myLazyLoad
+</script>
+</html>

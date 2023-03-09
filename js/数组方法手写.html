@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 用reduce实现map
+    const arr1 = arr2 = [1,2,3]
+    const callback = e => e*e
+    console.log(arr1.map(e=>callback(e)));
+    // 等价于
+    console.log(arr2.reduce((prev,curr)=>[...prev,callback(curr)],[]));
+
+    arr1.forEach(e=>{e = e*e})
+    console.log(arr1);//无效 forEach不改变原数组
+</script>
+</html>
