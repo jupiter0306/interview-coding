@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function myFlat(arr){
+        // 用reduce做
+        return arr.reduce((prev,curr)=>{
+            // 不能用[...prev,myFlat(curr)]，一维数组的myFlat返回还是个数组，要用concat
+            return Array.isArray(curr)?prev.concat(myFlat(curr)):prev.concat(curr)
+        },[])
+    }
+    // 类似深拷贝那个 result容器递归的时候要带着它！！
+    function myFlat2(arr,result=[]){
+        arr.forEach(e=>{
+            Array.isArray(e)?myFlat2(e,result):result.push(e)
+        })
+        return result
+    }
+    const arr=[1,[2,3]]
+    console.log(myFlat2(arr));
+
+    //数组去重
+    function removeDuplicate(arr){
+        return arr.reduce((prev,curr)=>{
+            return prev.includes(curr)?prev:[...prev,curr]
+        },[])
+    }
+    const arr2 = [1,2,2,3]
+    console.log(removeDuplicate(arr2));
+
+</script>
+</html>

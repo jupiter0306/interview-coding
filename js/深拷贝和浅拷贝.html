@@ -39,9 +39,18 @@
             const result = Array.isArray(target)?[]:{} 
             // 先将要进行深拷贝的target放入map中，后续修改cloneTarget时map中cloneTarget会跟着一起修改
             map.set(target,result)
-            for(let key of target){
-                if(target.hasOwnProperty(key))
-                result[key] = deepClone(target[key],map)
+            if(Array.isArray(target)){
+                target.forEach((e,idx)=>{
+                    result[idx] = deepClone(e,map)
+                })
+            }else{
+                for(const key in target){
+                    // 只克隆自身的属性
+                    if(target.hasOwnProperty(key)){
+                        result[key] = deepClone(target[key],map)
+                    }
+
+                }
             }
             return result
         }
