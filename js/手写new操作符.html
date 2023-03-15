@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function _new(fn,...args){
+        if(typeof fn !="function") throw new Error('fn应为函数')
+        // 1.新建空对象
+        let obj = {}
+        // 2.对象的隐式原型指向构造函数的显式原型
+        obj.__proto__ = fn.prototype
+        // 改变this指向新对象
+        let res = fn.call(obj,...args)
+        // 如果构造函数有返回值且是object实例 返回该对象 否则返回新创建的对象
+        return res instanceof Object? res :obj
+    }
+</script>
+</html>
