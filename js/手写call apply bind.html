@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    Function.prototype.myCall = function(context,...args){
+        context = ( context === null|| context === undefined)? window : Object(context)
+        context.fn = this
+        const res = context.fn(...args)
+        delete context.fn
+        return res
+    }
+    Function.prototype.myApply = function(context,args){
+        context = ( context === null|| context === undefined)? window : Object(context)
+        context.fn = this
+        const res = context.fn(...args)
+        delete context.fn
+        return res
+    }
+    Function.prototype.myBind = function(context,...args1){
+        const fn = this
+        context = ( context === null|| context === undefined)? window : Object(context)
+        return function(...args2){
+            context.fn = fn
+            const res = context.fn(...args1,...args2)
+            delete context.fn
+            return res
+        }
+    }
+</script>
+</html>

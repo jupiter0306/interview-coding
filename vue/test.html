@@ -9,21 +9,22 @@
 </head>
 <body>
     <div id="root">
-        <input type="checkbox" :checked="checked" @click="change(checked)">
+        <div v-for="item in items">{{item}}</div>
+        <button @click="change">change</button>
     </div>
 </body>
 
 <script>
     const vm = new Vue({
         el:'#root',
-        data:{
-            checked:true,
+        data(){
+            return {
+                items:['a','b']
+            }
         },
         methods:{
             change(checked){                
-                console.log(this.checked);
-                this.checked = !this.checked
-
+                this.items.unshift('c')
             }
         }
     });
