@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    new Array() // Array [] 
+    new Array(3) // Array [ <3 个空的存储位置> ] 
+    new Array(3, 5) // Array [ 3, 5 ]
+    // 直接调Array(3)是一样的结果 不写new反而省事
+    // new Array() 创建的empty的数组 map、filter、foreach 不能使用
+    let arr1 = new Array(8).map((_,index)=> index)
+    // 这个返回长度为8的空数组
+    let arr2 = Array.from(new Array(8),(_,index)=> index)
+    // 这个返回0-7
+    console.log(arr);
+</script>
+</html>
